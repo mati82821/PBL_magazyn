@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Welcome to PBL_magazyn’s documentation! &#8212; PBL_magazyn  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-main">
+<span id="welcome-to-pbl-magazyn-s-documentation"></span><h1>Welcome to PBL_magazyn’s documentation!<a class="headerlink" href="#module-main" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="main.WarehouseApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">WarehouseApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp" title="Link to this definition">¶</a></dt>
+<dd><p>Main class of program</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.add_product">
+<span class="sig-name descname"><span class="pre">add_product</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.add_product" title="Link to this definition">¶</a></dt>
+<dd><p>Shows window to add product</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.add_supplier">
+<span class="sig-name descname"><span class="pre">add_supplier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.add_supplier" title="Link to this definition">¶</a></dt>
+<dd><p>Shows adding supplier window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.create_menu">
+<span class="sig-name descname"><span class="pre">create_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.create_menu" title="Link to this definition">¶</a></dt>
+<dd><p>Creates menu bar</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.create_widgets">
+<span class="sig-name descname"><span class="pre">create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.create_widgets" title="Link to this definition">¶</a></dt>
+<dd><p>Creates widgets in apps’ main window</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.critical_point_check">
+<span class="sig-name descname"><span class="pre">critical_point_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.critical_point_check" title="Link to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Performs check on alarm point of quantity of the product</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> – ID of product on which check is performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.decrease_quantity">
+<span class="sig-name descname"><span class="pre">decrease_quantity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.decrease_quantity" title="Link to this definition">¶</a></dt>
+<dd><p>Decreases quantity of selected product by 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.delete_product">
+<span class="sig-name descname"><span class="pre">delete_product</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.delete_product" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes product</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.delete_supplier">
+<span class="sig-name descname"><span class="pre">delete_supplier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.delete_supplier" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if user is sure to delete supplier and deletes supplier.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.edit_product">
+<span class="sig-name descname"><span class="pre">edit_product</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.edit_product" title="Link to this definition">¶</a></dt>
+<dd><p>Shows window to edit product</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.edit_supplier">
+<span class="sig-name descname"><span class="pre">edit_supplier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.edit_supplier" title="Link to this definition">¶</a></dt>
+<dd><p>Shows editing supplier window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.increase_quantity">
+<span class="sig-name descname"><span class="pre">increase_quantity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.increase_quantity" title="Link to this definition">¶</a></dt>
+<dd><p>Increases quantity of selected product by 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.populate_product_list">
+<span class="sig-name descname"><span class="pre">populate_product_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.populate_product_list" title="Link to this definition">¶</a></dt>
+<dd><p>Populates product list with database entries</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.populate_suppliers_list">
+<span class="sig-name descname"><span class="pre">populate_suppliers_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.populate_suppliers_list" title="Link to this definition">¶</a></dt>
+<dd><p>Populates suppliers list with data from database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.product_form">
+<span class="sig-name descname"><span class="pre">product_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.product_form" title="Link to this definition">¶</a></dt>
+<dd><p>Creates form to add/edit product</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> – ID of product (used only during editing)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.reselect_item">
+<span class="sig-name descname"><span class="pre">reselect_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.reselect_item" title="Link to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Reselects item on list after operation</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> – ID of product which needs to be reselected.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.search_product">
+<span class="sig-name descname"><span class="pre">search_product</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.search_product" title="Link to this definition">¶</a></dt>
+<dd><p>Searches product using text from search bar.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.show_critical_tab">
+<span class="sig-name descname"><span class="pre">show_critical_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.show_critical_tab" title="Link to this definition">¶</a></dt>
+<dd><p>Shows window that presents products with quantities lower or equal to critical point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.show_suppliers_tab">
+<span class="sig-name descname"><span class="pre">show_suppliers_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.show_suppliers_tab" title="Link to this definition">¶</a></dt>
+<dd><p>Shows suppliers list window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.WarehouseApp.supplier_form">
+<span class="sig-name descname"><span class="pre">supplier_form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">supplier_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.WarehouseApp.supplier_form" title="Link to this definition">¶</a></dt>
+<dd><p>Creates form to add/edit supplier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>supplier_id</strong> – ID of supplier (used only during editing)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.initialize_db">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">initialize_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.initialize_db" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes database and creates tables</p>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">PBL_magazyn</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Marcel Czekała, Bartosz Słabik, Mateusz Wołczyk.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

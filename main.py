@@ -3,6 +3,9 @@ from tkinter import messagebox, ttk, Menu, StringVar
 import sqlite3
 import re
 def initialize_db():
+    """
+    Initializes database and creates tables
+    """
     conn = sqlite3.connect('warehouse.db')
     c = conn.cursor()
     
@@ -27,7 +30,13 @@ def initialize_db():
     conn.close()
 
 class WarehouseApp:
+    """
+    Main class of program
+    """
     def __init__(self, root):
+        """
+        Intializes main window
+        """
         self.root = root
         self.root.title("System Magazynowy")
         self.create_widgets()
@@ -37,7 +46,7 @@ class WarehouseApp:
 
     def create_menu(self):
         """
-        @brief Creates menu bar
+         Creates menu bar
         """
         self.menubar = Menu(root)
         self.menubar.add_cascade(label="Niskie stany magazynowe", command=self.show_critical_tab)
@@ -45,7 +54,7 @@ class WarehouseApp:
 
     def create_widgets(self):
         """
-        @brief Creates widgets in apps' main window
+         Creates widgets in apps' main window
         """
         self.product_list = ttk.Treeview(self.root, columns=('ID', 'Name', 'Quantity', 'Description', "Supplier"), show='headings')
         self.product_list.heading('ID', text='ID')
@@ -75,7 +84,7 @@ class WarehouseApp:
 
     def populate_product_list(self):
         """
-        @brief Populates product list with database entries
+         Populates product list with database entries
         """
         for i in self.product_list.get_children():
             self.product_list.delete(i)
@@ -96,7 +105,7 @@ class WarehouseApp:
 
     def add_product(self):
         """
-        @brief Shows window to add product
+         Shows window to add product
         """
         conn = sqlite3.connect('warehouse.db')
         c = conn.cursor()
@@ -109,7 +118,7 @@ class WarehouseApp:
 
     def edit_product(self):
         """
-        @brief Shows window to edit product
+         Shows window to edit product
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -121,7 +130,7 @@ class WarehouseApp:
 
     def delete_product(self):
         """
-        @brief Deletes product
+         Deletes product
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -140,8 +149,9 @@ class WarehouseApp:
 
     def product_form(self, product_id=None):
         """
-        @brief Creates form to add/edit product
-        @param product_id ID of product (used only during editing)
+        Creates form to add/edit product
+        
+        :param product_id: ID of product (used only during editing)
         """
         form = tk.Toplevel(self.root)
         form.title("Produkt")
@@ -188,7 +198,7 @@ class WarehouseApp:
 
         def save_product():
             """
-            @brief Performs form data validation and then saves product.
+             Performs form data validation and then saves product.
             """
             name = name_entry.get()
             quantity = quantity_entry.get()
@@ -221,7 +231,7 @@ class WarehouseApp:
 
     def search_product(self):
             """
-            @brief Searches product using text from search bar.
+             Searches product using text from search bar.
             """
             search_text = self.search_var.get()
             
@@ -243,7 +253,7 @@ class WarehouseApp:
             conn.close()
     def increase_quantity(self):
         """
-        @brief Increases quantity of selected product by 1.
+         Increases quantity of selected product by 1.
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -266,7 +276,7 @@ class WarehouseApp:
 
     def decrease_quantity(self):
         """
-        @brief Decreases quantity of selected product by 1.
+         Decreases quantity of selected product by 1.
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -293,9 +303,9 @@ class WarehouseApp:
 
     def reselect_item(self, product_id):
         """
-        @brief Reselects item on list after operation
+         Reselects item on list after operation
         
-        @param product_id ID of product which needs to be reselected.
+        :param product_id: ID of product which needs to be reselected.
         """
         for item in self.product_list.get_children():
             if int(self.product_list.item(item, "values")[0]) == int(product_id):
@@ -304,9 +314,9 @@ class WarehouseApp:
                 break
     def critical_point_check(self, product_id):
         """
-        @brief Performs check on alarm point of quantity of the product
+         Performs check on alarm point of quantity of the product
         
-        @param product_id ID of product on which check is performed.
+        :param product_id: ID of product on which check is performed.
         """
         conn = sqlite3.connect('warehouse.db')
         c = conn.cursor()
@@ -318,7 +328,7 @@ class WarehouseApp:
     
     def show_critical_tab(self):
         """
-        @brief Shows window that presents products with quantities lower or equal to critical point.
+         Shows window that presents products with quantities lower or equal to critical point.
         """
         inventory_window = tk.Toplevel(self.root)
         inventory_window.title("Niskie stany magazynowe")
@@ -340,7 +350,7 @@ class WarehouseApp:
 
     def show_suppliers_tab(self):
         """
-        @brief Shows suppliers list window.
+         Shows suppliers list window.
         """
         suppliers_window = tk.Toplevel(self.root)
         suppliers_window.title("Dostawcy")
@@ -366,7 +376,7 @@ class WarehouseApp:
 
     def populate_suppliers_list(self):
         """
-        @brief Populates suppliers list with data from database.
+         Populates suppliers list with data from database.
         """
         for i in self.suppliers_list.get_children():
             self.suppliers_list.delete(i)
@@ -379,8 +389,9 @@ class WarehouseApp:
         conn.close()
     def supplier_form(self, supplier_id=None):
         """
-        @brief Creates form to add/edit supplier
-        @param supplier_id ID of supplier (used only during editing)
+        Creates form to add/edit supplier
+
+        :param supplier_id: ID of supplier (used only during editing)
         """
         form = tk.Toplevel(self.root)
         form.title("Dostawca")
@@ -418,7 +429,7 @@ class WarehouseApp:
 
         def save_supplier():
             """
-            @brief Performs form data validation and then saves supplier.
+             Performs form data validation and then saves supplier.
             """
             name = name_entry.get()
             address = address_entry.get()
@@ -449,13 +460,13 @@ class WarehouseApp:
         tk.Button(form, text="Zapisz", command=save_supplier).grid(row=5, column=0, columnspan=2)
     def add_supplier(self):
         """
-        @brief Shows adding supplier window.
+         Shows adding supplier window.
         """
         self.supplier_form()
 
     def edit_supplier(self):
         """
-        @brief Shows editing supplier window.
+         Shows editing supplier window.
         """
         selected_item = self.suppliers_list.selection()
         if selected_item:
@@ -467,7 +478,7 @@ class WarehouseApp:
 
     def delete_supplier(self):
         """
-        @brief Checks if user is sure to delete supplier and deletes supplier.
+         Checks if user is sure to delete supplier and deletes supplier.
         """
         selected_item = self.suppliers_list.selection()
         if selected_item:
