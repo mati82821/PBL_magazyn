@@ -1,6 +1,30 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, Menu, StringVar
 import sqlite3
+import re
+def initialize_db():
+    conn = sqlite3.connect('warehouse.db')
+    c = conn.cursor()
+    
+    # Create products table
+    c.execute('''CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    quantity INTEGER NOT NULL,
+                    description TEXT,
+                    criticalPoint INTEGER NOT NULL, 
+                    supplierId INTEGER NOT NULL)''')
+
+    # Create suppliers table
+    c.execute('''CREATE TABLE IF NOT EXISTS suppliers (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    address INTEGER NOT NULL,
+                    description TEXT,
+                    email TEXT NOT NULL,
+                    phoneNumber TEXT NOT NULL)''')
+    conn.commit()
+    conn.close()
 
 class WarehouseApp:
     def __init__(self, root):
@@ -13,7 +37,7 @@ class WarehouseApp:
 
     def create_menu(self):
         """
-        @brief Tworzy pasek menu.
+        @brief Creates menu bar
         """
         self.menubar = Menu(root)
         self.menubar.add_cascade(label="Niskie stany magazynowe", command=self.show_critical_tab)
@@ -21,7 +45,7 @@ class WarehouseApp:
 
     def create_widgets(self):
         """
-        @brief Tworzy widgety w panelu dolnym.
+        @brief Creates widgets in apps' main window
         """
         self.product_list = ttk.Treeview(self.root, columns=('ID', 'Name', 'Quantity', 'Description', "Supplier"), show='headings')
         self.product_list.heading('ID', text='ID')
@@ -51,7 +75,7 @@ class WarehouseApp:
 
     def populate_product_list(self):
         """
-        @brief Wypełnia listę produktów danymi z bazy danych.
+        @brief Populates product list with database entries
         """
         for i in self.product_list.get_children():
             self.product_list.delete(i)
@@ -60,28 +84,32 @@ class WarehouseApp:
         c = conn.cursor()
         c.execute("SELECT id, name FROM suppliers")
         suppliers = c.fetchall()
-        print(suppliers)
         suppliers_dict = dict()
         for s in suppliers:
             suppliers_dict.update({s[0] : s[1]})
-        print(suppliers_dict)
         c = conn.cursor()
         c.execute("SELECT * FROM products")
         rows = c.fetchall()
         for row in rows:
-            print(row[4])
             self.product_list.insert("", "end", values=(int(row[0]), row[1], int(row[2]), row[3], suppliers_dict.get(row[5])))
         conn.close()
 
     def add_product(self):
         """
-        @brief Wyświetla okno dodawania produktu.
+        @brief Shows window to add product
         """
-        self.product_form()
+        conn = sqlite3.connect('warehouse.db')
+        c = conn.cursor()
+        c.execute("SELECT count(*) FROM suppliers")
+        number = c.fetchone()
+        if number[0] == 0:
+            messagebox.showwarning("Ostrzeżenie", "Dodaj dostawcę przed dodawaniem produktu")
+        else:
+            self.product_form()
 
     def edit_product(self):
         """
-        @brief Wyświetla okno edycji produktu.
+        @brief Shows window to edit product
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -93,7 +121,7 @@ class WarehouseApp:
 
     def delete_product(self):
         """
-        @brief Wyświetla okno usuwania produktu.
+        @brief Deletes product
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -112,7 +140,8 @@ class WarehouseApp:
 
     def product_form(self, product_id=None):
         """
-        @brief Otwiera okno dodawania/edycji/usuwania produktu.
+        @brief Creates form to add/edit product
+        @param product_id ID of product (used only during editing)
         """
         form = tk.Toplevel(self.root)
         form.title("Produkt")
@@ -134,7 +163,6 @@ class WarehouseApp:
         suppliers = c.fetchall()
         supparray = []
         for s in suppliers:
-            print(s)
             supparray.append(str("{}: {}").format(s[0],s[1]))
         conn.close()
         supplier_dropdown = tk.OptionMenu(form, supplier_id_value, *supparray)
@@ -156,15 +184,24 @@ class WarehouseApp:
             quantity_entry.insert(0, product[2])
             description_entry.insert(0, product[3])
             critical_point_entry.insert(0, product[4])
+            supplier_id_value.set(supparray[product[5]-1])
 
         def save_product():
             """
-            @brief Zapisuje produkt.
+            @brief Performs form data validation and then saves product.
             """
             name = name_entry.get()
             quantity = quantity_entry.get()
+            if quantity.isdigit() == False or int(quantity) < 0:
+                messagebox.showwarning("Ostrzeżenie", "Ilość musi być liczbą większą lub równą 0")
+                form.focus()
+                return False
             description = description_entry.get()
             critical_point = critical_point_entry.get()
+            if critical_point.isdigit() == False or int(critical_point) < 0:
+                messagebox.showwarning("Ostrzeżenie", "Poziom alarmowy musi być liczbą większą lub równą 0")
+                form.focus()
+                return False
             supplier_id = supplier_id_value.get().split(":")[0]
 
             conn = sqlite3.connect('warehouse.db')
@@ -175,7 +212,8 @@ class WarehouseApp:
                 c.execute("INSERT INTO products (name, quantity, description, criticalPoint, supplierId) VALUES (?, ?, ?, ?, ?)", (name, quantity, description, critical_point, supplier_id))
             conn.commit()
             conn.close()
-
+            if product_id:
+                self.critical_point_check(product_id)
             form.destroy()
             self.populate_product_list()
 
@@ -183,7 +221,7 @@ class WarehouseApp:
 
     def search_product(self):
             """
-            @brief Wyszukuje produkty na podstawie wprowadzonego tekstu.
+            @brief Searches product using text from search bar.
             """
             search_text = self.search_var.get()
             
@@ -199,7 +237,7 @@ class WarehouseApp:
             conn.close()
     def increase_quantity(self):
         """
-        @brief Zwiększa ilość wybranego produktu o 1.
+        @brief Increases quantity of selected product by 1.
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -222,7 +260,7 @@ class WarehouseApp:
 
     def decrease_quantity(self):
         """
-        @brief Zmniejsza ilość wybranego produktu o 1.
+        @brief Decreases quantity of selected product by 1.
         """
         selected_item = self.product_list.selection()
         if selected_item:
@@ -249,9 +287,9 @@ class WarehouseApp:
 
     def reselect_item(self, product_id):
         """
-        @brief Ponownie zaznacza produkt na liście na podstawie ID.
+        @brief Reselects item on list after operation
         
-        @param product_id ID produktu, który ma zostać ponownie zaznaczony.
+        @param product_id ID of product which needs to be reselected.
         """
         for item in self.product_list.get_children():
             if int(self.product_list.item(item, "values")[0]) == int(product_id):
@@ -259,6 +297,11 @@ class WarehouseApp:
                 self.product_list.focus(item)
                 break
     def critical_point_check(self, product_id):
+        """
+        @brief Performs check on alarm point of quantity of the product
+        
+        @param product_id ID of product on which check is performed.
+        """
         conn = sqlite3.connect('warehouse.db')
         c = conn.cursor()
         c.execute("SELECT * FROM products WHERE id=?", (product_id,))
@@ -269,7 +312,7 @@ class WarehouseApp:
     
     def show_critical_tab(self):
         """
-        @brief Otwiera nowe okno z listą produktów i ich ilościami.
+        @brief Shows window that presents products with quantities lower or equal to critical point.
         """
         inventory_window = tk.Toplevel(self.root)
         inventory_window.title("Niskie stany magazynowe")
@@ -291,7 +334,7 @@ class WarehouseApp:
 
     def show_suppliers_tab(self):
         """
-        @brief Otwiera nowe okno z listą dostawców.
+        @brief Shows suppliers list window.
         """
         suppliers_window = tk.Toplevel(self.root)
         suppliers_window.title("Dostawcy")
@@ -317,7 +360,7 @@ class WarehouseApp:
 
     def populate_suppliers_list(self):
         """
-        @brief Wypełnia listę dostawców danymi z bazy danych.
+        @brief Populates suppliers list with data from database.
         """
         for i in self.suppliers_list.get_children():
             self.suppliers_list.delete(i)
@@ -330,7 +373,8 @@ class WarehouseApp:
         conn.close()
     def supplier_form(self, supplier_id=None):
         """
-        @brief Otwiera okno dodawania/edycji/usuwania dostawcy.
+        @brief Creates form to add/edit supplier
+        @param supplier_id ID of supplier (used only during editing)
         """
         form = tk.Toplevel(self.root)
         form.title("Dostawca")
@@ -368,18 +412,27 @@ class WarehouseApp:
 
         def save_supplier():
             """
-            @brief Zapisuje dostawcę.
+            @brief Performs form data validation and then saves supplier.
             """
             name = name_entry.get()
             address = address_entry.get()
             description = description_entry.get()
+            email_pattern = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
             email = email_entry.get()
+            if not re.fullmatch(email_pattern, email):
+                messagebox.showwarning("Ostrzeżenie", "Wprowadź poprawny adres email")
+                form.focus()
+                return False
+            phone_pattern = re.compile(r"^\+[0-9]{0,14}$")
             phone = phone_entry.get()
-
+            if not re.fullmatch(phone_pattern, phone):
+                messagebox.showwarning("Ostrzeżenie", "Wprowadź poprawny numer telefonu")
+                form.focus()
+                return False
             conn = sqlite3.connect('warehouse.db')
             c = conn.cursor()
             if supplier_id:
-                c.execute("UPDATE suppliers SET name=?, address=?, description=?, email=?, phoneNumber=? WHERE id=?", (name, address, description, email, phone))
+                c.execute("UPDATE suppliers SET name=?, address=?, description=?, email=?, phoneNumber=? WHERE id=?", (name, address, description, email, phone, supplier_id))
             else:
                 c.execute("INSERT INTO suppliers (name, address, description, email, phoneNumber) VALUES (?, ?, ?, ?, ?)", (name, address, description, email, phone))
             conn.commit()
@@ -390,13 +443,13 @@ class WarehouseApp:
         tk.Button(form, text="Zapisz", command=save_supplier).grid(row=5, column=0, columnspan=2)
     def add_supplier(self):
         """
-        @brief Wyświetla okno dodawania dostawcy.
+        @brief Shows adding supplier window.
         """
         self.supplier_form()
 
     def edit_supplier(self):
         """
-        @brief Wyświetla okno edycji dostawcy.
+        @brief Shows editing supplier window.
         """
         selected_item = self.suppliers_list.selection()
         if selected_item:
@@ -408,23 +461,31 @@ class WarehouseApp:
 
     def delete_supplier(self):
         """
-        @brief Wyświetla okno usuwania dostawcy.
+        @brief Checks if user is sure to delete supplier and deletes supplier.
         """
         selected_item = self.suppliers_list.selection()
         if selected_item:
             item = self.suppliers_list.item(selected_item)
             supplier_id = item['values'][0]
-            
-            conn = sqlite3.connect('warehouse.db')
-            c = conn.cursor()
-            c.execute("DELETE FROM suppliers WHERE id=?", (supplier_id,))
-            conn.commit()
-            conn.close()
+            sure = messagebox.askquestion("Usuwanie", "Czy na pewno chcesz usunąć dostawcę {}?".format(item['values'][1]))
+            if sure == "yes":
+                conn = sqlite3.connect('warehouse.db')
+                c = conn.cursor()
+                c.execute("SELECT count(*) FROM products WHERE supplierId = ?", (supplier_id,))
+                prod_count = c.fetchone()[0]
+                if prod_count > 0:
+                    messagebox.showerror("Błąd", "Do dostawcy przypisane są produkty! Nie można usunąć dostawcy")
+                else:
+                    c = conn.cursor()
+                    c.execute("DELETE FROM suppliers WHERE id=?", (supplier_id,))
+                    conn.commit()
+                    conn.close()
         else:
             messagebox.showwarning("Ostrzeżenie", "Prosze wybrać dostawcę którego chcesz usunąć")
         self.populate_suppliers_list()
 
 if __name__ == "__main__":
+    initialize_db()
     root = tk.Tk()
     app = WarehouseApp(root)
     root.mainloop()
