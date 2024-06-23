@@ -230,10 +230,16 @@ class WarehouseApp:
             
             conn = sqlite3.connect('warehouse.db')
             c = conn.cursor()
+            c.execute("SELECT id, name FROM suppliers")
+            suppliers = c.fetchall()
+            suppliers_dict = dict()
+            for s in suppliers:
+                suppliers_dict.update({s[0] : s[1]})
+            c = conn.cursor()
             c.execute("SELECT * FROM products WHERE name LIKE ?", ('%' + search_text + '%',))
             rows = c.fetchall()
             for row in rows:
-                self.product_list.insert("", "end", values=row)
+                self.product_list.insert("", "end", values=(int(row[0]), row[1], int(row[2]), row[3], suppliers_dict.get(row[5])))
             conn.close()
     def increase_quantity(self):
         """
