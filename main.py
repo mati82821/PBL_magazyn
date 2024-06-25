@@ -355,7 +355,7 @@ class WarehouseApp:
         suppliers_window = tk.Toplevel(self.root)
         suppliers_window.title("Dostawcy")
 
-        self.suppliers_list = ttk.Treeview(suppliers_window, columns=('ID', 'Name', 'Description', 'Address', "E-mail", "Phone number"), show='headings')
+        self.suppliers_list = ttk.Treeview(suppliers_window, columns=('ID', 'Name', 'Address', 'Description', "E-mail", "Phone number"), show='headings')
         self.suppliers_list.heading('ID', text='ID')
         self.suppliers_list.heading('Name', text='Nazwa')
         self.suppliers_list.heading('Description', text='Opis')
